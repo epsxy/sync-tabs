@@ -1,0 +1,32 @@
+.todosList
+  margin: 5em
+
+.addTodo__container
+  margin-bottom: 2em
+
+.todosList__card
+  margin-bottom: 1em
+  transition: box-shadow .3s
+  &:hover
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)
+
+.todoCard__container
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+
+.todoCard__container
+  flex-grow: 1
+
+.todoCard__actions
+  flex-grow: 0
+
+.todoCard__content
+  .mat-card-title
+    font-size: 20px
+    color: darkslategray
+    margin-bottom: unset
+  &--checked
+    .mat-card-title
+      text-decoration: line-through

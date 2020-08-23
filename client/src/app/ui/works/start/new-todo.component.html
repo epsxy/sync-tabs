@@ -1,0 +1,17 @@
+<div class="startWork__container" *ngIf="enable">
+        <mat-form-field class="startWork__input">
+            <mat-label>Write your todo here ...</mat-label>
+            <input matInput />
+        </mat-form-field>
+        <button
+            mat-raised-button
+            class="startWork__formBtn"
+            color="warn"
+            (click)="onCancel()"
+        >
+            Cancel
+        </button>
+        <button mat-raised-button class="startWork__formBtn" color="primary">
+            Add
+        </button>
+</div>

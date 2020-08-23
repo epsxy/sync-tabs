@@ -1,0 +1,65 @@
+<div class="todosList">
+    <div class="addTodo__container">
+        <button
+            mat-raised-button
+            class="addTodo__Btn"
+            color="primary"
+            (click)="createTodo()"
+            *ngIf="!isCreatingNewTodo"
+        >
+            <mat-icon>create</mat-icon> Add Todo
+        </button>
+
+        <app-new-todo
+            [enable]="isCreatingNewTodo"
+            (cancelEvent)="onCreateTodoCancel()"
+        ></app-new-todo>
+    </div>
+
+    <mat-card *ngFor="let todo of todos" class="todosList__card">
+        <mat-card-content>
+            <div class="todoCard__container">
+                <div
+                    class="todoCard__content"
+                    [ngClass]="
+                        todo?.checked ? 'todoCard__content--checked' : ''
+                    "
+                >
+                    <mat-card-title>{{ todo.content }}</mat-card-title>
+                </div>
+                <div class="todoCard__actions">
+                    <button
+                        mat-icon-button
+                        color="primary"
+                        aria-label="Mark todo as completed"
+                        *ngIf="!todo?.checked"
+                    >
+                        <mat-icon>check</mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        color="primary"
+                        aria-label="Mark todo as not completed"
+                        *ngIf="todo?.checked"
+                    >
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        color="primary"
+                        aria-label="Example icon button with a home icon"
+                    >
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        color="warn"
+                        aria-label="Example icon button with a home icon"
+                    >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
