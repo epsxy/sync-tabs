@@ -20,25 +20,28 @@ export class TodosListComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         const todosSub = this.store
             .select(state => state.todos)
-            .subscribe(todos => {
-                const tds = [...todos];
-                tds.sort((t1, t2) => {
-                    if (t1.checked && !t2.checked) {
-                        return 1;
-                    } else if (!t1.checked && t2.checked) {
-                        return -1;
-                    } else {
-                        return t1.id.localeCompare(t2.id);
-                    }
-                });
-                this.todos = tds;
-            });
+            .subscribe(todos => this.updateTodos(todos));
 
         this.subscriptions.push(todosSub);
     }
 
     ngOnDestroy(): void {
         this.subscriptions.forEach(sub => sub.unsubscribe());
+    }
+
+    private updateTodos(todos: Todo[]): void {
+        this.todos = [];
+        const tds = [...todos];
+        tds.sort((t1, t2) => {
+            if (t1.checked && !t2.checked) {
+                return 1;
+            } else if (!t1.checked && t2.checked) {
+                return -1;
+            } else {
+                return t1.id.localeCompare(t2.id);
+            }
+        });
+        this.todos = tds;
     }
 
     createTodo(): void {

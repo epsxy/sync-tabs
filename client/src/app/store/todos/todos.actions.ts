@@ -5,6 +5,7 @@ export enum TodosActionTypes {
     Add = '[Todos] Add',
     Remove = '[Todos] Remove',
     Toggle = '[Todos] Toggle',
+    Init = '[Todos] Init',
 }
 
 export class AddTodo implements ActionImpl {
@@ -22,4 +23,9 @@ export class ToggleTodo implements ActionImpl {
     constructor(public payload: { id: string; checked: boolean }) {}
 }
 
-export type TodosActions = AddTodo | RemoveTodo | ToggleTodo;
+export class InitTodo implements ActionImpl {
+    readonly type = TodosActionTypes.Init;
+    constructor(public payload: { todos: Todo[] }) {}
+}
+
+export type TodosActions = AddTodo | RemoveTodo | ToggleTodo | InitTodo;

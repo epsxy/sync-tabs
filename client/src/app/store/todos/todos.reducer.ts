@@ -26,6 +26,8 @@ export function todosReducer(
     action: TodosActions
 ): Todo[] {
     switch (action.type) {
+        case TodosActionTypes.Init:
+            return action.payload.todos;
         case TodosActionTypes.Add:
             return [...state, action.payload];
         case TodosActionTypes.Remove:
