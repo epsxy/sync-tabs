@@ -2,7 +2,8 @@ import { Injectable, NgZone } from '@angular/core';
 import { RootState } from '../store/root';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
-import { InitTodo } from '../store/todos/todos.actions';
+import { InitTodo, TodosActionTypes } from '../store/todos/todos.actions';
+import { Todo } from '../model/todo.model';
 
 @Injectable()
 // @ts-ignore
@@ -10,6 +11,7 @@ export class SyncStoreService {
     channel: BroadcastChannel = null;
     lastReceivedAction = null;
     actionsToIgnore = [];
+    todos: Todo[] = [];
 
     constructor(
         private store: Store<RootState>,
@@ -19,6 +21,9 @@ export class SyncStoreService {
         this.channel = new BroadcastChannel('todos-app');
         this.channel.onmessage = msg => this.onMessage(msg);
         this.channel.postMessage(JSON.stringify({ type: 'TAB_CONNECTED' }));
+        this.store.subscribe(state => {
+            this.todos = state.todos;
+        });
         this.actions.subscribe(action => {
             if (
                 !this.actionsToIgnore.includes(action.type) &&
@@ -33,11 +38,13 @@ export class SyncStoreService {
         this.ngZone.run(() => {
             const parsedData = JSON.parse(msg.data);
             if (parsedData.type === 'TAB_CONNECTED') {
-                this.lastReceivedAction = parsedData;
+                this.channel.postMessage(
+                    JSON.stringify(new InitTodo({ todos: this.todos }))
+                );
             }
-            if (parsedData.type === 'INIT_DATA') {
+            if (parsedData.type === TodosActionTypes.Init) {
                 this.lastReceivedAction = parsedData;
-                this.store.dispatch(new InitTodo({ todos: msg.data.todos }));
+                this.store.dispatch(parsedData);
             } else {
                 this.lastReceivedAction = parsedData;
                 console.log(parsedData);
