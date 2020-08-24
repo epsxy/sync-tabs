@@ -5,10 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TodosModule } from './ui/works/todos.module';
+import { StoreModule } from '@ngrx/store';
+import { todosReducer } from './store/todos/todos.reducer';
 
 @NgModule({
     declarations: [AppComponent],
     imports: [
+        StoreModule.forRoot({ todos: todosReducer }),
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,

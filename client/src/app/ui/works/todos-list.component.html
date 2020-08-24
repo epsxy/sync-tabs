@@ -12,7 +12,7 @@
 
         <app-new-todo
             [enable]="isCreatingNewTodo"
-            (cancelEvent)="onCreateTodoCancel()"
+            (closeEvent)="onCreateTodoClose()"
         ></app-new-todo>
     </div>
 
@@ -33,6 +33,7 @@
                         color="primary"
                         aria-label="Mark todo as completed"
                         *ngIf="!todo?.checked"
+                        (click)="checkTodo(todo.id)"
                     >
                         <mat-icon>check</mat-icon>
                     </button>
@@ -41,6 +42,7 @@
                         color="primary"
                         aria-label="Mark todo as not completed"
                         *ngIf="todo?.checked"
+                        (click)="uncheckTodo(todo.id)"
                     >
                         <mat-icon>clear</mat-icon>
                     </button>
@@ -55,6 +57,7 @@
                         mat-icon-button
                         color="warn"
                         aria-label="Example icon button with a home icon"
+                        (click)="removeTodo(todo.id)"
                     >
                         <mat-icon>delete</mat-icon>
                     </button>
