@@ -4,9 +4,9 @@ import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
 import { InitTodo, TodosActionTypes } from '../store/todos/todos.actions';
 import { Todo } from '../model/todo.model';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Injectable()
-// @ts-ignore
 export class SyncStoreService {
     channel: BroadcastChannel = null;
     lastReceivedAction = null;
@@ -16,22 +16,25 @@ export class SyncStoreService {
     constructor(
         private store: Store<RootState>,
         private actions: Actions,
+        private deviceDetector: DeviceDetectorService,
         private ngZone: NgZone
     ) {
-        this.channel = new BroadcastChannel('todos-app');
-        this.channel.onmessage = msg => this.onMessage(msg);
-        this.channel.postMessage(JSON.stringify({ type: 'TAB_CONNECTED' }));
-        this.store.subscribe(state => {
-            this.todos = state.todos;
-        });
-        this.actions.subscribe(action => {
-            if (
-                !this.actionsToIgnore.includes(action.type) &&
-                action !== this.lastReceivedAction
-            ) {
-                this.channel.postMessage(JSON.stringify(action));
-            }
-        });
+        if (this.deviceDetector.isDesktop()) {
+            this.channel = new BroadcastChannel('todos-app');
+            this.channel.onmessage = msg => this.onMessage(msg);
+            this.channel.postMessage(JSON.stringify({ type: 'TAB_CONNECTED' }));
+            this.store.subscribe(state => {
+                this.todos = state.todos;
+            });
+            this.actions.subscribe(action => {
+                if (
+                    !this.actionsToIgnore.includes(action.type) &&
+                    action !== this.lastReceivedAction
+                ) {
+                    this.channel.postMessage(JSON.stringify(action));
+                }
+            });
+        }
     }
 
     onMessage(msg: MessageEvent): void {

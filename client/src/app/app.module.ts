@@ -10,6 +10,7 @@ import { todosReducer } from './store/todos/todos.reducer';
 import { SyncStoreService } from './services/sync-store.service';
 import { EffectsModule } from '@ngrx/effects';
 import { RootState } from './store/root';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 
 @NgModule({
     declarations: [AppComponent],
@@ -19,6 +20,7 @@ import { RootState } from './store/root';
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
+        DeviceDetectorModule,
         TodosModule,
     ],
     providers: [SyncStoreService],
