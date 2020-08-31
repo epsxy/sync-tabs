@@ -15,6 +15,7 @@
         mat-raised-button
         class="startWork__formBtn"
         color="primary"
+        [disabled]="!value || value === ''"
         (click)="onSubmit()"
     >
         Add
