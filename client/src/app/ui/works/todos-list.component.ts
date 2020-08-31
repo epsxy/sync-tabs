@@ -1,9 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { Todo } from '../../model/todo.model';
 import { Store } from '@ngrx/store';
 import { RootState } from '../../store/root';
 import { Subscription } from 'rxjs';
 import { RemoveTodo, ToggleTodo } from '../../store/todos/todos.actions';
+import { NewTodoComponent } from './start/new-todo.component';
 
 @Component({
     selector: 'app-todos-list',
@@ -14,6 +21,7 @@ export class TodosListComponent implements OnInit, OnDestroy {
     todos: Todo[] = [];
     isCreatingNewTodo = false;
     subscriptions: Subscription[] = [];
+    @ViewChild('newTodoComponent') newTodoComponent: NewTodoComponent;
 
     constructor(private store: Store<RootState>) {}
 
@@ -46,6 +54,9 @@ export class TodosListComponent implements OnInit, OnDestroy {
 
     createTodo(): void {
         this.isCreatingNewTodo = true;
+        setTimeout(() => {
+            this.newTodoComponent.setFocus();
+        }, 100);
     }
 
     onCreateTodoClose(): void {

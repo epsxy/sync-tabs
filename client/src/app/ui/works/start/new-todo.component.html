@@ -1,7 +1,7 @@
 <div class="startWork__container" *ngIf="enable">
     <mat-form-field class="startWork__input">
         <mat-label>Write your todo here ...</mat-label>
-        <input matInput [(ngModel)]="value" />
+        <input #todoInput matInput [(ngModel)]="value" />
     </mat-form-field>
     <button
         mat-raised-button

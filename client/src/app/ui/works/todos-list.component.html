@@ -11,6 +11,7 @@
         </button>
 
         <app-new-todo
+            #newTodoComponent
             [enable]="isCreatingNewTodo"
             (closeEvent)="onCreateTodoClose()"
         ></app-new-todo>
