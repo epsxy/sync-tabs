@@ -19,7 +19,13 @@ export class SyncStoreService {
         private deviceDetector: DeviceDetectorService,
         private ngZone: NgZone
     ) {
-        if (this.deviceDetector.isDesktop()) {
+        if (
+            this.deviceDetector.isDesktop() &&
+            this.deviceDetector.browser !== 'Safari' &&
+            this.deviceDetector.browser !== 'Mobile Safari' &&
+            this.deviceDetector.browser !== 'Internet Explorer' &&
+            this.deviceDetector.browser !== 'IE Mobile'
+        ) {
             this.channel = new BroadcastChannel('todos-app');
             this.channel.onmessage = msg => this.onMessage(msg);
             this.channel.postMessage(JSON.stringify({ type: 'TAB_CONNECTED' }));
