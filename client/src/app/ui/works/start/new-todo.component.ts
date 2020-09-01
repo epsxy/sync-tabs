@@ -20,6 +20,7 @@ export class NewTodoComponent {
     value = '';
 
     @ViewChild('todoInput') todoInput: ElementRef;
+    // tslint:disable-next-line:no-input-rename
     @Input('enable') enable = false;
     @Output() closeEvent = new EventEmitter();
 
