@@ -3,6 +3,9 @@
 
 Synchronizing Redux state (NgRx) accross multiple tabs.
 
+![Image description](sync.png)
+
+
 ## Demonstration
 
 ![demo.gif](demo.gif)
