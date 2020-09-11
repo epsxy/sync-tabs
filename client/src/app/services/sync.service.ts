@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Inject, Injectable, NgZone } from '@angular/core';
 import { RootState } from '../store/root';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
@@ -10,15 +10,20 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 export class SyncStoreService {
     channel: BroadcastChannel = null;
     lastReceivedAction = null;
-    actionsToIgnore = [];
+    name = 'default-channel-name';
+    blacklist = [];
     todos: Todo[] = [];
 
     constructor(
+        @Inject('channelName') private channelName: string,
+        @Inject('blacklist') private ignoreList: string[],
         private store: Store<RootState>,
         private actions: Actions,
         private deviceDetector: DeviceDetectorService,
         private ngZone: NgZone
     ) {
+        this.name = channelName;
+        this.blacklist = ignoreList;
         if (
             this.deviceDetector.isDesktop() &&
             this.deviceDetector.browser !== 'Safari' &&
@@ -26,7 +31,7 @@ export class SyncStoreService {
             this.deviceDetector.browser !== 'Internet Explorer' &&
             this.deviceDetector.browser !== 'IE Mobile'
         ) {
-            this.channel = new BroadcastChannel('todos-app');
+            this.channel = new BroadcastChannel(this.name);
             this.channel.onmessage = msg => this.onMessage(msg);
             this.channel.postMessage(JSON.stringify({ type: 'TAB_CONNECTED' }));
             this.store.subscribe(state => {
@@ -34,7 +39,7 @@ export class SyncStoreService {
             });
             this.actions.subscribe(action => {
                 if (
-                    !this.actionsToIgnore.includes(action.type) &&
+                    !this.blacklist.includes(action.type) &&
                     action !== this.lastReceivedAction
                 ) {
                     this.channel.postMessage(JSON.stringify(action));
@@ -56,7 +61,6 @@ export class SyncStoreService {
                 this.store.dispatch(parsedData);
             } else {
                 this.lastReceivedAction = parsedData;
-                console.log(parsedData);
                 this.store.dispatch(parsedData);
             }
         });

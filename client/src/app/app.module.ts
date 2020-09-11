@@ -5,25 +5,25 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TodosModule } from './ui/works/todos.module';
-import { Store, StoreModule } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { todosReducer } from './store/todos/todos.reducer';
-import { SyncStoreService } from './services/sync-store.service';
 import { EffectsModule } from '@ngrx/effects';
-import { RootState } from './store/root';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { SyncStoreModule } from './services/sync.module';
+import { SyncStoreService } from './services/sync.service';
 
 @NgModule({
     declarations: [AppComponent],
     imports: [
         StoreModule.forRoot({ todos: todosReducer }),
         EffectsModule.forRoot(),
+        SyncStoreModule.forRoot('todos-app', []),
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
         DeviceDetectorModule,
         TodosModule,
     ],
-    providers: [SyncStoreService],
     bootstrap: [AppComponent],
 })
 export class AppModule {
