@@ -1,13 +1,13 @@
-# sync-tabs
+# tabs-sync
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/08b64187-31a4-486b-ab95-5a982884f5f2/deploy-status)](https://app.netlify.com/sites/kind-bose-068089/deploys)
 
 Synchronizing Redux state (NgRx) accross multiple tabs.
 
-![Image description](sync.png)
-
+![Image description](logo.gif)
 
 ## Demonstration
-
+ 
 ![demo.gif](demo.gif)
 
 ## Getting Started
